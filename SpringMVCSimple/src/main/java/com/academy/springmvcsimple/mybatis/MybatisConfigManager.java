@@ -7,12 +7,14 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.stereotype.Component;
 
 /*
  * config.xml을 파싱하여, 쿼리문 수행객체인 sqlsession을 모아놓고 관리해주는
  * sqlsessionfactory 를 생성해야하낟
  * 공식홈페이지에 의하면, sqlsessionfactory는 메모리에 싱글턴으로 관리하자
  */
+
 public class MybatisConfigManager {
 	private static MybatisConfigManager instance;
 	SqlSessionFactory sqlSessionFactory;

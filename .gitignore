@@ -11,6 +11,7 @@ pom.properties
 MANIFEST.MF
 
 ### Eclipse ###
+resources
 Servers
 .metadata
 bin/

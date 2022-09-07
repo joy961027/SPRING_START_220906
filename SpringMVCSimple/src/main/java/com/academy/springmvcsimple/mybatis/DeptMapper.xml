@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dept">
+
+	<!-- 부서 등록 -->
+	<insert id="insert" parameterType="Dept">
+		insert into dept(deptno, dname, loc) values(seq_dept.nextval, #{dname},#{loc})
+		<!-- 방금 들어간 레코드의 pk가져오기 
+			왜 select max(deptno) from dept(공유 사용자에 의해 손상 될수 있음)
+			mysql : select last_insert_id()
+			oracle : select seq_dept.currval as deptno from dual
+		-->
+		<selectKey keyColumn="deptno" keyProperty="deptno" order="AFTER" resultType="int" >
+			select seq_dept.currval as deptno from dual
+		</selectKey>
+	</insert>
+	
+	<select id="selectAll" resultType="Dept">
+		select * from dept
+	</select>
+
+	<select id="select" parameterType="int" resultType="Dept">
+		select * from dept where deptno=#{deptno}
+	</select>
+
+
+
+</mapper>
