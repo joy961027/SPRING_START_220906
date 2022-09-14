@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="News">
+
+	<!-- CRUD -->
+	
+	
+	<!-- association이 아닌 collection을 이용하여 하나의 news기사에 딸려있는 모든 comments를 가져와보자 1:다관계 -->
+	<resultMap type="News" id="newsMap">
+		<id property="news_id" 		column="news_id" />
+		<result property="title" 			column="title" />
+		<result property="writer" 		column="writer" />
+		<result property="content" 	column="content" />
+		<result property="regdate" 	column="regdate" />
+		<result property="hit" 			column="hit" />
+		<collection property="commentsList"  column="news_id" 
+		select="Comments.selectAllByNewsId"  javaType="java.util.List" ofType="Comments"/>
+	</resultMap>
+	
+	<select id="selectAll"  resultMap="newsMap" resultType="News">
+		select * from news order by news_id desc
+	</select>
+	
+	<select id="select" resultType="News" parameterType="int">
+		select * from news where news_id =#{news_id}
+	</select>
+
+
+	<insert id="insert" parameterType="News">
+		insert into news(news_id,title,writer,content) values(seq_news.nextval,#{title},#{writer},#{content})
+	</insert>
+</mapper>
