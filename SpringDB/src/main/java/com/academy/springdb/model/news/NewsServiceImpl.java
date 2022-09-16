@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.academy.springdb.exception.CommentsException;
 import com.academy.springdb.exception.NewsException;
 import com.academy.springdb.model.domain.News;
 
@@ -14,6 +17,10 @@ public class NewsServiceImpl implements NewsService{
 	@Autowired
 	@Qualifier("mybatisNewsDAO")
 	private NewsDAO newsDAO;
+	
+	@Autowired
+	@Qualifier("mybatisCommentsDAO")
+	private CommentsDAO commentsDAO;
 	
 	@Override
 	public List selectAll() {
@@ -31,15 +38,16 @@ public class NewsServiceImpl implements NewsService{
 	}
 
 	@Override
-	public void update(News news) {
-		// TODO Auto-generated method stub
-		
+	public void update(News news) throws NewsException {
+		newsDAO.update(news);
 	}
 
-	@Override
-	public void delete(int news_id) {
-		// TODO Auto-generated method stub
-		
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(int news_id) throws NewsException,CommentsException {
+		//세부업무 1 자식글 삭제
+		commentsDAO.deleteByNewsId(news_id); //예외 걸려있음
+		//세부업무 2 부모글 삭제
+		newsDAO.delete(news_id); //예외 걸려있음
 	}
 	
 	

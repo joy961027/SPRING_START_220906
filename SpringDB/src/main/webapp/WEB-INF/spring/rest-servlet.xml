@@ -14,12 +14,13 @@
 		<!-- 컨트롤러를 어노테이션으로 생성 및 관리하고자 할때 이 태그를 등록해야 함 -->		
 		<annotation-driven/>
 		<!-- base-package에 소속된 모든 클래스는 인스턴스의 scan대상이 된다 -->
-		<context:component-scan base-package="com.academy.springdb.controller">
-			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-		</context:component-scan>
+		<context:component-scan base-package="com.academy.springdb.restcontroller" />
 		
-		
-		
-		
+		<!-- 비동기 요청에 대해,json 데이터를 보내고자 할때 java객체를 자동으로 json객체로 변환해주는 빈 등록 -->
+		<beans:bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<beans:property name="supportedMediaTypes">
+				<beans:value>application/json;charset=utf-8</beans:value>
+			</beans:property>
+		</beans:bean>
 		
 </beans:beans>

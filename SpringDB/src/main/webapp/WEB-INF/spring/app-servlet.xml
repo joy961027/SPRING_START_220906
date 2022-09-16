@@ -18,16 +18,18 @@
 			<beans:property name="suffix" value=".jsp"></beans:property>
 		</beans:bean>
 		
+		
 		<!-- 컨트롤러를 어노테이션으로 생성 및 관리하고자 할때 이태그를 등록해야 함 -->		
 		<annotation-driven/>
 		<!-- base-package에 소속된 모든 클래스는 인스턴스의 scan대상이 된다 -->
-		<context:component-scan base-package="com.academy.springdb.controller">
-			<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
-		</context:component-scan>
+		<context:component-scan base-package="com.academy.springdb.controller" />
 		
 		<!-- jsp와 같은 동적자원이 아닌 html,css,js image등의 정적자원은 매핑없이 접근할 수 있도록 설정 -->
 		<resources location="/resources/" mapping="/resources/**" ></resources> 
 		
-		
+		<!-- apache 파일업로드를 간소화 시켜준 업로드 처리 빈  -->		
+		<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<beans:property name="maxUploadSize" value="3145728"/><!-- 3mb제한 -->
+		</beans:bean>
 		
 </beans:beans>

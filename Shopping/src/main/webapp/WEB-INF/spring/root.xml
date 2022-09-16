@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+	<!-- 어느 db를 쓸지 결정한다 jndi로 가자! -->
+	<jee:jndi-lookup jndi-name="jdbc/myoracle" id="dataSource" resource-ref="true"/>
+	
+	<!-- DB연동 기술에 따라  트랜잭션 매니저 등록
+		hibernate : hibernateTransactionManager (사설)
+		jdbc : DataSourceTransactionManger
+		mybatis : DataSourceTransactionManager
+		JPA : (네이티브) JpaTransactionManager
+	-->
+	<tx:annotation-driven/>	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- mybatis의 쿼리문 수행 객체인 sqlsession 을 얻기 위한 객체인 sqlsessionfactorybean 등록 -->
+	<bean id="factoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:com/academy/shopping/mybatis/config.xml"/>
+	</bean>
+	
+
+	<!-- dao가 주입을 기다리고 있는 sqlsessiontemplate -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="factoryBean"/>
+	</bean>
+	
+
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.academy.shopping.model" />
+	
+</beans>
