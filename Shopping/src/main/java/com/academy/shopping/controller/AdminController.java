@@ -9,8 +9,8 @@ public class AdminController {
 	
 	
 	//로그인 폼 요청처리
-	@GetMapping("/admin/loginform")
-	public ModelAndView getForm() {
+	@GetMapping("/admin/loginForm")
+	public ModelAndView getLoginForm() {
 		
 		return new ModelAndView("admin/login_Form");
 	}
@@ -18,6 +18,13 @@ public class AdminController {
 	@GetMapping("/admin/registForm")
 	public ModelAndView getRegistForm() {
 		return new ModelAndView("admin/regist");
+	}
+	
+	//관리자 메인 페이지
+	@GetMapping("/admin/main")
+	public ModelAndView getMain() {
+		ModelAndView mav = new ModelAndView("admin/index");
+		return mav;
 	}
 
 }

@@ -57,16 +57,23 @@ function registAsync(){
 		},
 		success:function(result, status, xhr){
 			alert(result);
-			console.log("a",result)
 		}
 	});
 	
 	
 }
 $(function(){
+	//로그인 폼 요청	
+	$($("input[type='button']")[0]).click(function(){
+		$(location).attr("href","/admin/loginForm");
+	});
+	
+	//회원가입
 	$($("input[type='button']")[1]).click(function(){
 		registAsync();
 	});
+	
+	
 });
 </script>
 </head>
