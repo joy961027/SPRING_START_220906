@@ -46,7 +46,7 @@ public class MybatisSubCategoryDAO implements  SubCategoryDAO{
 
 	@Override
 	public List selectByTopCategoryId(int topcategory_id) {
-		return sqlSessionTemplate.selectList("SubCategory.selectByTopCategoryId0",topcategory_id);
+		return sqlSessionTemplate.selectList("SubCategory.selectByTopCategoryId",topcategory_id);
 	}
 	
 	

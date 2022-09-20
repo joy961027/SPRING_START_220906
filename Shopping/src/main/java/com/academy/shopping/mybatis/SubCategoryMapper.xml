@@ -4,28 +4,37 @@
 
 	<resultMap type="SubCategory" id="subcategoryMap">
 
-		<id 				property="subcategory_id" column="subcategory_id" />
-		<result 			property="category_name" column="category_name" />
-		<association 	property="topcategory" column="topcategory_id" javaType="TopCategory" select="TopCategory.select"/>
+		<id property="subcategory_id" column="subcategory_id" />
+		<result property="category_name" column="category_name" />
+		<association property="topcategory"
+			column="topcategory_id" javaType="TopCategory"
+			select="TopCategory.select" />
 	</resultMap>
 
 	<insert id="insert" parameterType="SubCategory">
 		insert into
 		subcategory(subcategory_id, category_name, topcategory_id)
-		values(seq_subcategory.nextval, #{category_name}, #{topcategory.topcategory_id})
+		values(seq_subcategory.nextval, #{category_name},
+		#{topcategory.topcategory_id})
 	</insert>
 
 
 	<select id="selectAll" resultType="SubCategory"
 		resultMap="subcategoryMap">
-		select * from subcategory 
+		select * from subcategory
 	</select>
-	
-		<select id="selectByTopCategoryId" resultType="SubCategory"
+
+	<!-- 해당상위 카테고리에 소속된 하위 카테고리드 -->
+	<select id="selectByTopCategoryId" resultType="SubCategory"
 		resultMap="subcategoryMap" parameterType="int">
-		select * from subcategory where topcategory_id =#{topcategory_id}
+		select * from subcategory
+		where topcategory_id =#{topcategory_id}
 	</select>
 	
+	<select id="select" parameterType="int" resultType="SubCategory">
+		select * from subcategory where subcategory_id=#{sbucategory_id}
+	</select>
+
 
 
 </mapper>

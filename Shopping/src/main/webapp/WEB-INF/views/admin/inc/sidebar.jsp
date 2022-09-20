@@ -13,7 +13,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/static/admin/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="/static/admin/dist/img/user2-160x160.jpg" class="/static/shop/img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block">Alexander Pierce</a>
@@ -55,9 +55,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="/admin/product/list" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>상품등록</p>
+                  <p>상품목록</p>
                 </a>
               </li>
             </ul>
@@ -75,13 +75,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="/static/shop/index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>회원정보</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="/static/shop/index2.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>메일발송</p>
                 </a>
@@ -101,13 +101,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="/static/shop/index.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>주문현황</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="/static/shop/index2.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>취소/환불</p>
                 </a>

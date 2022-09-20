@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard</title>
 <!-- header 파일 -->
- <%@ include file="./inc/header_link.jsp" %> --> 
+ <%@ include file="./inc/header_link.jsp" %>  
  <!-- /header 파일 -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -66,7 +66,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="/static/admin/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="/static/admin/dist/img/user1-128x128.jpg" alt="User Avatar" class="/static/shop/img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Brad Diesel
@@ -82,7 +82,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="/static/admin/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="/static/admin/dist/img/user8-128x128.jpg" alt="User Avatar" class="/static/shop/img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   John Pierce
@@ -98,7 +98,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="/static/admin/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="/static/admin/dist/img/user3-128x128.jpg" alt="User Avatar" class="/static/shop/img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Nora Silvester
@@ -782,39 +782,8 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="/static/admin/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="/static/admin/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="/static/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="/static/admin/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="/static/admin/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="/static/admin/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="/static/admin/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="/static/admin/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="/static/admin/plugins/moment/moment.min.js"></script>
-<script src="/static/admin/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="/static/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="/static/admin/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="/static/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/static/admin/dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="/static/admin/dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="/static/admin/dist/js/pages/dashboard.js"></script>
+<!-- include footer -->
+<%@ include file="./inc/footer_link.jsp" %>
+
 </body>
 </html>

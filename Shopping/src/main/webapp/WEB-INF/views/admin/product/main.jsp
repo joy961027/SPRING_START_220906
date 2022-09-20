@@ -1,4 +1,7 @@
+<%@page import="com.academy.shopping.model.domain.Product"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<% List<Product> productList = (List)request.getAttribute("productList");%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +16,6 @@
 <%@ include file="../inc/topbar.jsp" %>
 <%@ include file="../inc/sidebar.jsp" %>
 
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -22,7 +23,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Advanced Form</h1>
+            <h1>상품 목록</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -37,62 +38,65 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="card card-primary">
-          <div class="card-header">
-            <h3 class="card-title">카테고리 관리</h3>
+        
+   
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Responsive Hover Table</h3>
 
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>상위카테고리</label>
-                  	<div class="row"  style="margin:1px;">
-                  		<input type="text" class="form-control col-md-11" name="category_name">
-                  		<button class="btn btn-primary col-md-1" onClick="registTop()">등록</button>
-                  	</div>
-                  <select class="form-control select" style="width: 100%;" size="20" name="topCategory">
-                    <option selected="selected"></option>
-                  </select>
-                </div>
-                 <button class="btn btn-primary" >등록</button>
-                <button class="btn btn-primary">삭제</button>
-              </div>
-              <!-- /.col -->
-            <div class="col-md-6">
-                <div class="form-group">
-                  <label>하위 카테고리</label>
-                  <div class="row" style="margin:1px;">
-                  		<input type="text" class="form-control col-md-11" name="category_name">
-                  		<button class="btn btn-info col-md-1" onClick="registSub()">등록</button>
-                  	</div>
-                  <select class="form-control select" style="width: 100%;" size="20">
-                  </select>
-                </div>
-                <button class="btn btn-info">등록</button>
-                <button class="btn btn-info">삭제</button>
-              </div>
-            </div>
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-   			원하시는 아이템을 선택 후 삭제 및 수정이 가능하빈다
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>카테고리</th>
+                      <th>사진</th>
+                      <th>상품명</th>
+                      <th>브랜드</th>
+                      <th>가격</th>
+                      <th>할인가</th>
+                      <th>파일명</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <%for(int i=0; i<productList.size(); i++){ %>
+                  <% Product product = productList.get(i); %>
+                    <tr>
+                      <td><%=i %></td>
+                      <td><%=product.getSubcategory().getCategory_name() %></td>
+                      <td><img src="/static/data/<%=product.getProduct_img() %>" style="width:45px; height:45x;"></td>
+                      <td><a href="/admin/product/detail?product_id=<%=product.getProduct_id()%>"><%=product.getProduct_name() %></a></td>
+                      <td><%=product.getBrand() %></td>
+                      <td><%=product.getPrice() %></td>
+                      <td><%=product.getDiscount() %></td>
+                      <td><%=product.getProduct_img() %></td>
+                    </tr>
+                    <%} %>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
           </div>
         </div>
-        <!-- /.card -->
-
-        <!-- SELECT2 EXAMPLE -->
-        
+        <button class="btn btn-primary" onClick="location.href='/admin/product/registForm';">상품 등록</button>
+        <!-- /.row -->
        <!-- ------------------------ -->
       </div>
       <!-- /.container-fluid -->
@@ -242,6 +246,12 @@ $(function () {
 		getSubList($(this).val());
 		
 	});
+	
+	$('.nav-link').click(function(){
+		$('.nav-link').removeClass('active');
+		$(this).addClass('active');
+		})
+		
   
 });
 </script>
