@@ -96,6 +96,15 @@
           </div>
         </div>
         <button class="btn btn-primary" onClick="location.href='/admin/product/registForm';">상품 등록</button>
+        <button class="btn btn-primary" onClick="showExcel()">엑셀 등록</button>
+        <div style="display:none" id="excel-area">
+        
+        	<form id="excel-form">
+        		<input type="file" name="excel">
+        		<button type ="button" class="btn btn-info" onClick="registExcel()">등록</button>
+        	</form>
+        	
+        </div>
         <!-- /.row -->
        <!-- ------------------------ -->
       </div>
@@ -119,34 +128,8 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="/static/admin/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="/static/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Select2 -->
-<script src="/static/admin/plugins/select2/js/select2.full.min.js"></script>
-<!-- Bootstrap4 Duallistbox -->
-<script src="/static/admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
-<!-- InputMask -->
-<script src="/static/admin/plugins/moment/moment.min.js"></script>
-<script src="/static/admin/plugins/inputmask/jquery.inputmask.min.js"></script>
-<!-- date-range-picker -->
-<script src="/static/admin/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- bootstrap color picker -->
-<script src="/static/admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="/static/admin/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Bootstrap Switch -->
-<script src="/static/admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-<!-- BS-Stepper -->
-<script src="/static/admin/plugins/bs-stepper/js/bs-stepper.min.js"></script>
-<!-- dropzonejs -->
-<script src="/static/admin/plugins/dropzone/min/dropzone.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/static/admin/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="/static/admin/dist/js/demo.js"></script> -->
-<!-- Page specific script -->
+<%@ include file="../inc/footer_link.jsp"%>
+
 <script>
 
 
@@ -237,6 +220,26 @@ function printSubList(jsonArray){
 	}
 	
 }
+//엑셀 파일을 위한 상품 일괄 등록
+function registExcel(){
+	if($("input[name='excel']").val()==""){
+		alert("선택한 파일이 없습니다");
+		return;
+	}
+	if(confirm("엑셀로 등록할까요?")){
+		$("#excel-form").attr({
+			action:"/admin/product/excel",
+			method:"post",
+			enctype:"multipart/form-data"
+		});
+		$("#excel-form").submit();
+	}
+	
+}
+//가려져 있던 excel 등록 폼을 등록
+function showExcel(){
+	$("#excel-area").show();
+}
 
 $(function () {
 	getTopList();
@@ -250,7 +253,15 @@ $(function () {
 	$('.nav-link').click(function(){
 		$('.nav-link').removeClass('active');
 		$(this).addClass('active');
-		})
+	});
+	
+	$("input[name='excel']").change(function(){
+		var ext =getExt($(this).val());
+		if(ext!="xls" && ext!="xlsx"){
+			alert("excel만 선택해주세요");
+			$(this).val(null);
+		}		
+	});
 		
   
 });

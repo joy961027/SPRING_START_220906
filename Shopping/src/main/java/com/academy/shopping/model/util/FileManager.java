@@ -14,6 +14,7 @@ import com.academy.shopping.model.domain.Product;
 
 @Component
 public class FileManager {
+	
 	//파일과 관련된 유용한 기능을 구현한 객체
 	public String save(Product product, String savePath) throws UploadException{
 		MultipartFile multi = product.getPhoto();
@@ -34,6 +35,21 @@ public class FileManager {
 		return time+"."+ext;
 		
 	}
+	//엑셀파일 업로드 용
+	public File saveExcel(String path, MultipartFile excel){
+		
+		File file=null;
+		try {
+				excel.transferTo(file = new File(path+"/"+excel.getOriginalFilename()));
+				System.out.println(file.getAbsolutePath());
+		} catch (IllegalStateException e) {
+				e.printStackTrace();
+		} catch (IOException e) {
+				e.printStackTrace();
+		}
+		return file;
+	}
+	
 	
 	public static String  getExt(String path) {
 		int index =path.lastIndexOf("."); //가장 마지막 점의 인데스 구하기

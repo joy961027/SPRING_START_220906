@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="TopCategory">
+	
+	
+	
+	<!-- 컬렉션을 위한 1:다 관계(부모한건이 딸려잇는 자식들을 같이 가져오기  -->
+	<resultMap type="TopCategory" id="topCategoryMap">
+		<id 			property="topcategory_id" 	column="topcategory_id" />
+		<result 		property="category_name" 	column="category_name" />
+		<collection 	property="subList"  				column="topcategory_id" 
+		javaType="java.util.List" ofType="SubCategory" select="SubCategory.selectByTopCategoryId" />
+	
+	</resultMap>
+
 
 	<!-- 등록 -->
 	<insert id="insert" parameterType="TopCategory">
@@ -11,8 +23,8 @@
 
 	<!-- 목록 -->
 
-	<select id="selectAll" resultType="TopCategory">
-		select * from topcategory
+	<select id="selectAll"  resultMap="topCategoryMap">
+		select * from topcategory order by topcategory_id asc
 	</select>
 
 	<select id="select" resultType="TopCategory" parameterType="int">
