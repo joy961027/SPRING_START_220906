@@ -1,11 +1,11 @@
 package com.academy.shopping.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,8 +30,15 @@ public class ProductController {
 	private FileManager fileManager;
 	
 	@GetMapping("/admin/product/list")
-	public ModelAndView productMain() {
-		ModelAndView mav = new ModelAndView("admin/product/main");
+	public ModelAndView productMain(HttpServletRequest request) {
+		//로그인 인증을 거치지 않았다면, 거부한다.
+		HttpSession session = request.getSession();
+		ModelAndView mav =null;
+		if(session.getAttribute("admin")==null) {
+			mav= new ModelAndView("admin/error/auth");
+			return mav;
+		}
+		mav= new ModelAndView("admin/product/main");
 		List<Product> productList = productService.selectAll();
 		mav.addObject("productList", productList);
 		return mav;
@@ -59,6 +66,10 @@ public class ProductController {
 	mav.addObject("product", product);
 	return mav;
 	}
+	
+	
+	
+	
 	//관리자 -엑셀 등록
 	@PostMapping("/admin/product/excel")
 	public ModelAndView registByExcel(MultipartFile excel, HttpServletRequest request) {
@@ -67,8 +78,11 @@ public class ProductController {
 		File savedFile = fileManager.saveExcel(path,excel);
 		
 		//2) 업로드된 엑셀을 대상으로 해석
-		
-		return null;
+		productService.registByExcel(savedFile
+				,context.getRealPath("/resources/shop/img/product")
+				,context.getRealPath("/resources/data"));
+		ModelAndView mav = new ModelAndView("redirect:/admin/product/list");
+		return mav;
 	}
 	
 	

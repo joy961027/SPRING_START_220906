@@ -12,4 +12,4 @@
     <link rel="stylesheet" href="/static/shop/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/static/shop/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/static/shop/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/shop/css/style.css" type="text/css">l>
+    <link rel="stylesheet" href="/static/shop/css/style.css" type="text/css">

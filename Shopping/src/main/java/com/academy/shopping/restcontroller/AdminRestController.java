@@ -1,5 +1,8 @@
 package com.academy.shopping.restcontroller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +38,7 @@ public class AdminRestController {
 	
 	//로그인 요청 암호화를 시켜야함
 	@PostMapping("/admin/login")
-	public ResponseEntity<String> login(Admin admin) {
+	public ResponseEntity<String> login(Admin admin,HttpServletRequest request) {
 		//db에 패스워드를 비교하기 전에, 먼저 클라이너트가 전송한 password를 hash 값으로 변경한 후 비교해야함
 		String hashedValue = hashManager.getConvertedPassword(admin.getPass()); //평문 -> hash
 		admin.setPass(hashedValue); //dto의 패스워드 값을 해쉬 값으로 교체
@@ -43,6 +46,9 @@ public class AdminRestController {
 		Admin obj = adminService.selectByIdAndPass(admin); //해당 아이디와 패스워드가 일치하는 회원이 있을대 ,DTO가 널이 아님
 		
 		System.out.println("로그인 결과 " +obj);
+		//세션에 정보를 담아두자!!
+		HttpSession session = request.getSession();
+		session.setAttribute("admin", obj);
 		ResponseEntity<String> entity = new ResponseEntity<String>("1", HttpStatus.OK);
 		return  entity;
 	}
