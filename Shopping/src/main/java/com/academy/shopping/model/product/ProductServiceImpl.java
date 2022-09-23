@@ -52,11 +52,8 @@ public class ProductServiceImpl implements ProductService {
 		for (int i = 0; i < subCategoryList.size(); i++) {
 			SubCategory subCategory = subCategoryList.get(i);
 			List<Product> list = productDAO.selectBySubCategoryId(subCategory.getSubcategory_id());
-			System.out.println("이건 리스트 " + list);
 			for (Product product : list) {
 				productList.add(product);
-				System.out.println("이건 productList" + productList);
-				System.out.println("이건 product" + product);
 			}
 
 		}

@@ -1,4 +1,4 @@
-package com.academy.shopping.controller;
+package com.academy.shopping.controller.admin;
 
 import java.io.File;
 import java.util.List;
@@ -46,7 +46,7 @@ public class ProductController {
 	
 
 	@GetMapping("/admin/product/registForm")
-	public ModelAndView getRegistForm() {
+	public ModelAndView getRegistForm(HttpServletRequest request) {
 		
 		return new ModelAndView("admin/product/regist");
 	}
@@ -60,7 +60,7 @@ public class ProductController {
 	}
 	//관리자 - 상품 detail보기
 	@GetMapping("/admin/product/detail")
-	public ModelAndView getDetail(int product_id) {
+	public ModelAndView getDetail(int product_id,HttpServletRequest request) {
 	Product product= productService.select(product_id);
 	ModelAndView mav =  new ModelAndView("admin/product/detail");
 	mav.addObject("product", product);

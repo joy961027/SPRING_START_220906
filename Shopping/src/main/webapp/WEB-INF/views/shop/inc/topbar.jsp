@@ -71,15 +71,19 @@
                 <div class="col-lg-3">
                     <div class="header__right">
                         <div class="header__right__auth">
-                            <a href="/shop/member/loginForm">Login</a>
-                            <a href="/shop/member/registForm">Register</a>
+                        	<%if(session.getAttribute("member")==null) {%>
+                            	<a href="/shop/member/loginForm">Login</a>
+                            	<a href="/shop/member/registForm">Register</a>
+                        	<%}else{ %>
+                            	<a href="javascript:logout()">Logout</a>
+                            <%} %>
                         </div>
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
                             <li><a href="#"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
-                            <li><a href="#"><span class="icon_bag_alt"></span>
+                            <li><a href="/shop/cart/list"><span class="icon_bag_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
                         </ul>
@@ -92,4 +96,10 @@
         </div>
     </header>
     <!-- Header Section End -->
-
+	<script>
+	function logout(){
+		if(confirm("로그아웃 하시겠습니까")){
+			location.href="/shop/member/logout";
+		}
+	}
+	</script>

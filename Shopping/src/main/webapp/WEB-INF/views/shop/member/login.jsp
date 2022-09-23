@@ -49,7 +49,7 @@
 	            <!-- Horizontal Form -->
 	            <div class="card card-info col-sm-12">
 	            	<div class="card-header"> 
-	                <h3 class="card-title">회원가입</h3>
+	                <h3 class="card-title">Login</h3>
 	              </div>
 	              <!-- /.card-header -->
 	              <!-- form start -->
@@ -58,21 +58,10 @@
 	                
 	                  <div class="form-group row">
 	                    <label for="customer_id" class="col-sm-2 col-form-label">ID</label>
-	                    
-	                    <div class="col-sm-8">
-                     		<input type="text" class="form-control" id="customer_id" placeholder="ID" name="customer_id">
-                      		<button type="button" class="btn btn-warning">중복체크</button>
-	                    </div>
-	                  </div>
-	                  
-	                          
-	                  <div class="form-group row">
-	                    <label for="customer_name" class="col-sm-2 col-form-label">Name</label>
 	                    <div class="col-sm-10">
-	                      <input type="text" class="form-control" id="customer_name" placeholder="Name" name="customer_name">
+                     		<input type="text" class="form-control" id="customer_id" placeholder="ID" name="customer_id">
 	                    </div>
 	                  </div>
-	                  
 	                  
 	                  <div class="form-group row">
 	                    <label for="customer_pass" class="col-sm-2 col-form-label">Password</label>
@@ -81,19 +70,12 @@
 	                    </div>
 	                  </div>
 	                  
-	                          
-	                  <div class="form-group row">
-	                    <label for="customer_email" class="col-sm-2 col-form-label">Email</label>
-	                    <div class="col-sm-10">
-	                      <input type="email" class="form-control" id="customer_email" placeholder="Email" name="customer_email">
-	                    </div>
-	                  </div>
 	                  
 	                </div>
 	                <!-- /.card-body -->
 	                <div class="card-footer">
-	                  <button type="button" class="btn btn-info">로그인</button>
-	                  <button type="button" class="btn btn-info">등록</button>
+	                  <button type="button" class="btn btn-info" >로그인</button>
+	                  <button type="button" class="btn btn-info">회원가입</button>
 	                </div>
 	                <!-- /.card-footer -->
 	              </form>
@@ -121,74 +103,34 @@
 	<!-- include jsPlugins  -->
 	<%@ include file="../inc/plugin.jsp" %>
 <script>
-var isCheck=false;
-var validId=false;
-function regist(){
-	if(!isCheck){
-		alert("중복 체크를 해주세요.");
-		return;
-	}
-	if(!validId){
-		alert("중복된 아이디 입니다");
-		return;
-	}
-	
-	//폼전송
+function login(){
 	$.ajax({
-		url:"/rest/member",
+		url:"/rest/member/login",
 		type:"post",
 		data:{
 			customer_id:$("#customer_id").val(),
-			customer_name:$("#customer_name").val(),
-			customer_pass:$("#customer_pass").val(),
-			customer_email:$("#customer_email").val()
+			customer_pass:$("#customer_pass").val()
 		},
-		success:function(result,status,xhr){
+		success:function(result,stauts, xhr){
+			alert(result.msg);
 			if(result.code==1){
-				alert(result.msg);
-			}else{
-				alert("회원가입을 실패\n 계속될 경우 관리자에게 연락바랍니다");
+				location.href="/shop"	
 			}
-		},
-		error:function(xhr,status,error){
-			alert(error);
 		}
-	});
-	
-}
-function login(){
-	location.href="/shop/member/loginForm"
+	})
 }
 
-function checkId(){
-	if($("#customer_id").val()==""){
-		alert("아이디를 입력하세요");
-		return;
-	}
-	isCheck=true;
-	$.ajax({
-		url:"/rest/member/"+$("#customer_id").val(),
-		type:"get",
-		success:function(result,status,xhr){
-			(result.code==1)?validId=true:validId=false;
-			alert(result.msg);
-		}
-	});
-}
 
 $(function(){
 	//회원 등록 버튼에 이벤트 연결
-	$($("form button")[0]).click(function(){//중복확인
-		checkId();
-	});
-	
-	$($("form button")[1]).click(function(){//로그인
+	$($("form button")[0]).click(function(){//로그인
 		login();
 	});
 	
-	$($("form button")[2]).click(function(){//가입
-		regist();
+	$($("form button")[1]).click(function(){//회원가입
+		location.href="/shop/member/registForm";
 	});
+	
 });
 </script>
 </body>

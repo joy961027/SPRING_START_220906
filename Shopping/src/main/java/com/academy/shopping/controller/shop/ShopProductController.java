@@ -1,6 +1,8 @@
-package com.academy.shopping.controller;
+package com.academy.shopping.controller.shop;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,19 +18,15 @@ import com.academy.shopping.model.product.ProductService;
 @Controller
 public class ShopProductController {
 	@Autowired
-	private TopCategoryService topCategoryService;
-	
-	@Autowired
 	private ProductService productService;
 	
 	//상품 목록 페이지 요청
-	@GetMapping("shop/product")
+	@GetMapping("/shop/product")
 	public ModelAndView getproductMain(
 			@RequestParam(defaultValue ="0") int topcategory_id,
-			@RequestParam(defaultValue ="0") int subcategory_id) {
-		
+			@RequestParam(defaultValue ="0") int subcategory_id,
+			HttpServletRequest request) {
 		//카테고리 가져오기
-		List topCategoryList = topCategoryService.selectAll();
 		System.out.println("이 메서드 호출시 subcategory_id의 값은 " +subcategory_id);
 		//선택된 상품 가져오기
 		List productList =null;
@@ -41,25 +39,16 @@ public class ShopProductController {
 				productList = productService.selectBySubCategoryId(subcategory_id);
 			}
 		}
-		
-		
 		ModelAndView mav = new ModelAndView("shop/list");
-		mav.addObject("topCategoryList", topCategoryList);
 		mav.addObject("productList", productList);
 		return mav;
 	}
 	
 	@GetMapping("/shop/product/view")
-	public ModelAndView getDetail(int product_id) {
-		List topCategoryList = topCategoryService.selectAll();
-		
+	public ModelAndView getDetail(int product_id,HttpServletRequest request) {
 		//한건 가져오기
 		Product product =productService.select(product_id);
-		
 		ModelAndView mav = new ModelAndView("shop/detail");
-		
-		
-		mav.addObject("topCategoryList", topCategoryList);
 		mav.addObject("product", product);
 		return mav;
 	}

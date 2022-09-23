@@ -34,6 +34,22 @@ public class MybatisMemberDAO implements MemberDAO{
 		}
 		return result;
 	}	
+	
+	
+	
+	@Override
+	public Member selectByIdAndPass(Member member) throws MemberException{
+		Member result = sqlSessionTemplate.selectOne("Member.selectByIdAndPass",member);
+		if(result==null) {
+			throw new MemberException("로그인 정보가 올바르지 않습니다.");
+		}
+		return result;
+		
+	}
+	
+	
+	
+	
 	@Override
 	public void insert(Member member) throws MemberException{
 		int result = sqlSessionTemplate.insert("Member.insert",member);

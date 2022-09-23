@@ -7,7 +7,7 @@
 </head>
 <body style="background:yellow">
 	<% RuntimeException e = (RuntimeException) request.getAttribute("e");
-		out.print(e);
+		out.print(e.getMessage());
 	%>
 </body>
 </html>

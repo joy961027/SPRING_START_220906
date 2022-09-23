@@ -5,25 +5,73 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
 	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
 		http://www.springframework.org/schema/p http://www.springframework.org/schema/p/spring-p-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- 뷰 리절버 등록 -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-	<property name="prefix" value="/WEB-INF/views/"/>
-	<property name="suffix" value=".jsp"/>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
 	</bean>
-	<mvc:resources location="/resources/" mapping="/static/**"/>
+	<mvc:resources location="/resources/"
+		mapping="/static/**" />
 	<!-- 컴포넌트 스캔 -->
-	<mvc:annotation-driven/>
-	<context:component-scan base-package="com.academy.shopping.controller"/>
-	
+	<mvc:annotation-driven />
+	<context:component-scan
+		base-package="com.academy.shopping.controller" />
+
 	<!-- 파일업로드 등록 -->
-	<bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="1048576"></property>
 	</bean>
+	<!-- 공통로직 등록 -->
+<!-- 	<bean id="topCategoryAspect" class="com.academy.shopping.aop.TopCategoryAspect"></bean> -->
+	<bean id="adminLoginAspect" class="com.academy.shopping.aop.AdminLoginAspect"></bean>
+	<bean id="globalExceptionAspect" class="com.academy.shopping.aop.GlobalExceptionAspect"></bean>
+	<bean id="memberLoginAspect" class="com.academy.shopping.aop.MemberLoginAspect"></bean>
+
+	<!-- 계획 쇼핑몰내의 모든 컨트롤러의 메서드 호출 시 우리가 정의한 aspect를 동작시킬것임 -->
+<!-- 
+	<aop:config>
+		<aop:aspect ref="topCategoryAspect">
+			어디지점에서?
+			<aop:pointcut
+				expression="execution(public * com.academy.shopping.controller.shop..*(..))"
+				id="topCategoryPointcut" />
+			어느 시점?
+			<aop:around method="getCategoryList"
+				pointcut-ref="topCategoryPointcut" />
+		</aop:aspect>
+	</aop:config>
+
+ -->
+	<aop:config>
+		<aop:aspect ref="adminLoginAspect">
+			<!-- 어디지점에서? -->
+			<aop:pointcut expression="execution(public * com.academy.shopping.controller.admin..*(..))"
+			 id="adminLoginPointcut" />
+			<!-- 어느 시점? -->
+			<aop:around method="loginCheck"
+				pointcut-ref="adminLoginPointcut" />
+		</aop:aspect>
+	</aop:config>
+	
+	<aop:config>
+		<aop:aspect ref="memberLoginAspect">
+			<aop:pointcut expression="execution(public * com.academy.shopping.controller.shop..*(..))" 
+			id="memberLoginPointcut"/>
+			<aop:around method="loginCheck"
+			 pointcut-ref="memberLoginPointcut"/>		
+		</aop:aspect>
+	</aop:config>
+
+
 </beans>
