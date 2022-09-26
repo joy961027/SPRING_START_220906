@@ -101,8 +101,74 @@ create table member(
 	,customer_email varchar(50)
 );
 
-create sequence 
+create sequence seq_member
+increment by 1
+start with 1
+
+--결제 방법
+create table paymethod(
+	paymethod_id number primary key
+	,payname varchar(30)
+);
+
+
+--주문 요약
+create table ordersummary(
+	ordersummary_id number primary key
+	,member_id number			--누가 fk
+	,paymethod_id number		--어떤 결제 방법 fk
+	,totalbuy number default 0 -- 얼마나
+	,totalpay nubmer default 0 --실제 결제금
+	,buydate date default sysdate -- 언제 샀어
+	,constraint fk_member_ordersummery foreign key(member_id)
+		references member(member_id)
+	,constraint fk_paymethod_ordersummery foreign key(paymethod_id)
+		references paymethod(paymethod_id)
+);
+
+create table orderdetail(
+	orderdetail_id number primary key
+	,product_id number 
+	,ea number default 0
+	,ordersummary_id number
+	,constraint fk_product_orderdetail foreign key(product_id)
+		references product(product_id)
+	,constraint fk_ordersummary_orderdetail foreign key(ordersummary_id)
+		references ordersummary(ordersummary_id)
+);
+
+create sequence seq_paymethod
+increment by 1
+start with 1;
+
+create sequence seq_ordersummary
+increment by 1
+start with 1;
+
+create sequence seq_orderdetail
+increment by 1
+start with 1;
+
+INSERT  INTO PAYMETHOD VALUES(seq_paymethod.nextval, '카드결제');
+INSERT  INTO PAYMETHOD VALUES(seq_paymethod.nextval, '핸드폰');
+INSERT  INTO PAYMETHOD VALUES(seq_paymethod.nextval, '가상계좌');
+INSERT  INTO PAYMETHOD VALUES(seq_paymethod.nextval, '온라인입금');
 
 
 
-SQL>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

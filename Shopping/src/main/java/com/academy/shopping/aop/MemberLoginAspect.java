@@ -34,7 +34,8 @@ public class MemberLoginAspect {
 		ModelAndView mav  = null;
 		//로그인이 필요한 서비스 와 아닌 서비스 구분
 		if(
-			uri.equals("/shop/cart/list") 
+			uri.equals("/shop/cart/list") || 
+			uri.equals("/rest/cart") 
 		) {
 			session = request.getSession();
 			if(session.getAttribute("member")==null) {

@@ -26,7 +26,7 @@ public class ShopMemberRestController {
 	private MemberService memberService;
 	
 	@PostMapping("/member")
-	public ResponseEntity<Message> regist(Member member) {
+	public ResponseEntity<Message> regist(HttpServletRequest request,Member member) {
 		memberService.insert(member);
 		Message message= new Message(1,"가입성공");
 		ResponseEntity<Message> entity = new ResponseEntity<Message>(message,HttpStatus.OK);
@@ -34,7 +34,7 @@ public class ShopMemberRestController {
 	}
 	
 	@GetMapping("/member/{customer_id}")
-	public ResponseEntity<Message> getId(@PathVariable("customer_id") String customer_id){
+	public ResponseEntity<Message> getId(@PathVariable("customer_id") String customer_id, HttpServletRequest request){
 		System.out.println("검증할 아이디는 " +customer_id);
 		memberService.selectByCustomerId(customer_id);
 		Message message= new Message(1, customer_id + "는 사용가능합니다.");
@@ -43,7 +43,7 @@ public class ShopMemberRestController {
 	}
 	
 	@PostMapping("/member/login")
-	public ResponseEntity<Message> login(Member member, HttpServletRequest request){
+	public ResponseEntity<Message> login(HttpServletRequest request, Member member){
 		HttpSession session=  request.getSession();
 		Member result = memberService.selectByIdAndPass(member);
 		session.setAttribute("member", result);
@@ -54,11 +54,11 @@ public class ShopMemberRestController {
 	}
 	
 	
-	@ExceptionHandler(MemberException.class)
-	public ResponseEntity handlerException(MemberException e) {
-		Message message= new Message(0,e.getMessage());
-		ResponseEntity<Message> entity = new ResponseEntity<Message>(message,HttpStatus.OK);
-		return entity;
-	}
+//	@ExceptionHandler(MemberException.class)
+//	public ResponseEntity handlerException(MemberException e) {
+//		Message message= new Message(0,e.getMessage());
+//		ResponseEntity<Message> entity = new ResponseEntity<Message>(message,HttpStatus.OK);
+//		return entity;
+//	}
 
 }

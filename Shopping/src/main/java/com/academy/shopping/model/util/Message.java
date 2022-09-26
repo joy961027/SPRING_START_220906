@@ -11,4 +11,6 @@ import lombok.Data;
 public class Message {
 	private int code; //성공, 실패 등의 정보를 담는 코드 1성공, 0 실패
 	private String msg;
+	public static final int SUCCESS =1;
+	public static final int FAIL =0;
 }

@@ -347,7 +347,7 @@ function addCart(){
 		
 		},
 		success:function(result,status,xhr){
-			
+			alert(result.msg);
 		}
 	});
 }

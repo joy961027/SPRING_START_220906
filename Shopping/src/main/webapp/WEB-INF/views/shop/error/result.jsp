@@ -47,9 +47,9 @@
         <div class="container">
             <div class="row">
                 <p>이용에 불편을 드려 죄송합니다.</p>
-                <%RuntimeException e = (RuntimeException) request.getAttribute("e");
+               <p> <%RuntimeException e = (RuntimeException) request.getAttribute("e");
                 	out.print(e.getMessage());
-                %>
+                %></p>
             </div>
         </div>
     </section>
