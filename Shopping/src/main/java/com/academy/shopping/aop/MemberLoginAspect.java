@@ -35,7 +35,8 @@ public class MemberLoginAspect {
 		//로그인이 필요한 서비스 와 아닌 서비스 구분
 		if(
 			uri.equals("/shop/cart/list") || 
-			uri.equals("/rest/cart") 
+			uri.equals("/rest/cart") 	||
+			uri.equals("/shop/checkout")
 		) {
 			session = request.getSession();
 			if(session.getAttribute("member")==null) {

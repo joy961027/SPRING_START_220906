@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,8 +34,8 @@ public class ShopMemberRestController {
 		return entity;
 	}
 	
-	@GetMapping("/member/{customer_id}")
-	public ResponseEntity<Message> getId(@PathVariable("customer_id") String customer_id, HttpServletRequest request){
+	@GetMapping("/member/check")
+	public ResponseEntity<Message> getId(@RequestParam("customer_id") String customer_id, HttpServletRequest request){
 		System.out.println("검증할 아이디는 " +customer_id);
 		memberService.selectByCustomerId(customer_id);
 		Message message= new Message(1, customer_id + "는 사용가능합니다.");

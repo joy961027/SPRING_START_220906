@@ -37,7 +37,6 @@
 	<bean id="adminLoginAspect" class="com.academy.shopping.aop.AdminLoginAspect"></bean>
 	<bean id="memberLoginAspect" class="com.academy.shopping.aop.MemberLoginAspect"></bean>
 	<bean id="globalExceptionAspect" class="com.academy.shopping.aop.GlobalExceptionAspect"></bean>
-
 	<!-- 계획 쇼핑몰내의 모든 컨트롤러의 메서드 호출 시 우리가 정의한 aspect를 동작시킬것임 -->
 <!-- 
 	<aop:config>
@@ -72,6 +71,6 @@
 			 pointcut-ref="memberLoginPointcut"/>		
 		</aop:aspect>
 	</aop:config>
-
+	
 
 </beans>

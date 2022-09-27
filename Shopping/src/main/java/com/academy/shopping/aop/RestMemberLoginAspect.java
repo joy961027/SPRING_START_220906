@@ -35,8 +35,16 @@ public class RestMemberLoginAspect {
 		ResponseEntity entity = null;
 		System.out.println("uri : "+uri);
 		if(
-				uri.equals("/rest/cart") 
+				uri.equals("/rest/member/login") ||
+				uri.equals("/rest/member/check") ||
+				uri.equals("/rest/member") 
 		) {
+			returnObj = joinPoint.proceed();
+			if(returnObj instanceof ResponseEntity) {
+				entity=(ResponseEntity) returnObj;
+				System.out.println("엔터티 반환"+ entity);
+			}
+		}else{
 			if(session.getAttribute("member")==null) {
 				throw new MemberException("회원 로그인이 필요한 서비스 입니다.(rest)");
 			}else {
@@ -45,13 +53,6 @@ public class RestMemberLoginAspect {
 					entity=(ResponseEntity) returnObj;
 					System.out.println("엔터티 반환"+ entity);
 				}
-			}
-			
-		}else{
-			returnObj = joinPoint.proceed();
-			if(returnObj instanceof ResponseEntity) {
-				entity=(ResponseEntity) returnObj;
-				System.out.println("엔터티 반환"+ entity);
 			}
 		}
 		return returnObj;

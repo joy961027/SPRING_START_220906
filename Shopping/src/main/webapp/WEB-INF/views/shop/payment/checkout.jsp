@@ -1,11 +1,13 @@
+<%@page import="com.academy.shopping.model.domain.Paymethod"%>
 <%@page import="com.academy.shopping.model.domain.Member"%>
 <%@page import="com.academy.shopping.model.domain.Cart"%>
 <%@page import="com.academy.shopping.model.util.CurrencyFormatter"%>
 <%@page import="com.academy.shopping.model.domain.Product"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
-	Member member =(Member) request.getAttribute("member");
+Member member =(Member) request.getAttribute("member");
 	List<Cart> cartList =(List) request.getAttribute("cartList");
+	List<Paymethod> payMethodList =(List) request.getAttribute("payMethodList");
 	int totalPrice=0;
 	int totalDiscount =0;
 %>
@@ -61,6 +63,7 @@
                 </div>
             </div>
             <form id="pay-form" class="checkout__form">
+            	
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>구매자</h5>
@@ -98,41 +101,47 @@
                                             <span class="top__text">Product</span>
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        <%for(int i=0; i<cartList.size(); i++){ %>
-                                        <%Cart cart = cartList.get(i); %>
-                                        <li><%=i %>. <%=cart.getProduct_name() %> <span><%=CurrencyFormatter.getCurrency(cart.getDiscount())%> * <%=cart.getQuantity() %></span></li>
-                                        <%totalDiscount += cart.getDiscount()*cart.getQuantity() ; %>
-                                        <%} %>
+                                        <%
+                                        for(int i=0; i<cartList.size(); i++){
+                                        %>
+                                        <%
+                                        Cart cart = cartList.get(i);
+                                        %>
+                                        <li><%=i+1%>. <%=cart.getProduct_name()%> <span><%=CurrencyFormatter.getCurrency(cart.getDiscount())%> * <%=cart.getQuantity()%></span></li>
+                                        <%
+                                        totalDiscount += cart.getDiscount()*cart.getQuantity() ;
+                                        %>
+                                        <%
+                                        }
+                                        %>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
-                                        <li>구매총액 <span><%=CurrencyFormatter.getCurrency(totalDiscount) %></span></li>
-                                        <li>최종결제금액 <span><%=CurrencyFormatter.getCurrency(totalDiscount) %></span></li>
+                                        <li>구매총액 <span><%=CurrencyFormatter.getCurrency(totalDiscount)%></span></li>
+                                        <li>최종결제금액 <span><%=CurrencyFormatter.getCurrency(totalDiscount)%></span></li>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">
-                                    <label for="o-acc">
-                                      카드결제
-                                        <input type="checkbox" id="o-acc">
+                                	<%
+                                	for(int i=0; i<payMethodList.size(); i++){
+                                	%>
+                                	<%
+                                	Paymethod payMethod = payMethodList.get(i);
+                                	%>
+                                    <label for="o-acc<%=i%>">
+                                      <%=payMethod.getPayname() %>
+                                        <input type="radio" id="o-acc<%=i%>" name="paymethod.paymethod_id" value="<%=payMethod.getPaymethod_id()%>">
                                         <span class="checkmark"></span>
                                     </label>
-                                    
-                                    <label for="check-payment">
-                                        온라인 입금
-                                        <input type="checkbox" id="check-payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label for="paypal">
-                                        가상계좌
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
+                                    <%} %>
                                 </div>
-                                <button type="button" class="site-btn" onClick="pay()">Place oder</button>
+                                <button type="button" class="site-btn" onClick="pay()">Place order</button>
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="totalbuy" value="<%=totalDiscount %>">
+            		<input type="hidden" name="totalpay" value="<%=totalDiscount %>">
                 </form>
             </div>
         </section>
@@ -158,7 +167,7 @@
 	<%@ include file="../inc/plugin.jsp" %>
 <script>
 function pay(){
-	if(confrim("입력하신 정보로 결제 하시겠습니까?")){
+	if(confirm("입력하신 정보로 결제 하시겠습니까?")){
 		//사실은 각종 선택한 포인트, 쿠폰, 배송지, 배송정보
 		$("#pay-form").attr({
 			action:"/shop/pay",
