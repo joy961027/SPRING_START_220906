@@ -27,7 +27,7 @@ public class MailFormReader {
 			//한줄씩 읽어보자
 			while(br.ready()) {
 				String msg = br.readLine();
-				if(msg.equals("@@")) {
+				if(msg.contains("@@")) {
 					sb.append(content);
 				}
 				sb.append(msg);

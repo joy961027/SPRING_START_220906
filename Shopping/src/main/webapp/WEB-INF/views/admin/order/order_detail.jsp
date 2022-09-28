@@ -1,7 +1,12 @@
+<%@page import="com.academy.shopping.model.util.CurrencyFormatter"%>
+<%@page import="com.academy.shopping.model.domain.OrderDetail"%>
+<%@page import="com.academy.shopping.model.domain.OrderSummary"%>
 <%@page import="com.academy.shopping.model.domain.Product"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
-<% List<Product> productList = (List)request.getAttribute("productList");%>
+<%
+	OrderSummary orderSummary = (OrderSummary) request.getAttribute("orderSummary");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +28,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>상품 목록</h1>
+            <h1>주문 상세</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -44,7 +49,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
+                <h3 class="card-title">주문 상세 정보</h3>
 
                 <div class="card-tools">
                   <div class="input-group input-group-sm" style="width: 150px;">
@@ -61,34 +66,46 @@
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
+                	<thead>
+                		<tr>
+                			<th>주문번호</th>
+                			<th>주문일시</th>
+                			<th>구매자</th>
+                			<th>구매금액</th>
+                			<th>총결제금액</th>
+                		</tr>
+                	</thead>
+                	<tbody>
+                		<tr>
+                			<td><%=orderSummary.getOrdersummary_id() %></td>
+                			<td><%=orderSummary.getBuydate()%></td>
+                			<td><%=orderSummary.getMember().getCustomer_name()%></td>
+                			<td><%=CurrencyFormatter.getCurrency(orderSummary.getTotalbuy())%></td>
+                			<td><%=CurrencyFormatter.getCurrency(orderSummary.getTotalpay())%></td>
+                		</tr>
+                	</tbody>
+                </table> 
+                <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>카테고리</th>
-                      <th>사진</th>
+                      <th>상품 구분</th><!-- 하위 카테고리 -->
+                      <th>상품이미지</th>
                       <th>상품명</th>
-                      <th>브랜드</th>
                       <th>가격</th>
-                      <th>할인가</th>
-                      <th>파일명</th>
+                      <th>구매수량</th>
                     </tr>
                   </thead>
                   <tbody>
-                  <%for(int i=0; i<productList.size(); i++){ %>
-                  <% Product product = productList.get(i); %>
+                  <%for(int i=0; i<orderSummary.getOrderDetailList().size(); i++){ %>
+                  <% OrderDetail orderDetail = orderSummary.getOrderDetailList().get(i); %>
                     <tr>
                       <td><%=i %></td>
-                      <td><%=product.getSubcategory().getCategory_name() %></td>
-                      <td>
-                      	<a href="/admin/product/view?product_id=<%=product.getProduct_id()%>">
-                      		<img src="/static/data/<%=product.getProduct_img() %>" style="width:45px; height:45x;">
-                      	</a>
-                      </td>
-                      <td><%=product.getProduct_name() %></td>
-                      <td><%=product.getBrand() %></td>
-                      <td><%=product.getPrice() %></td>
-                      <td><%=product.getDiscount() %></td>
-                      <td><%=product.getProduct_img() %></td>
+                      <td><%=orderDetail.getProduct().getSubcategory().getCategory_name() %></td>
+                      <td><img  src="/static/data/<%=orderDetail.getProduct().getProduct_img() %> " width="45px"></td>
+                      <td><%=orderDetail.getProduct().getProduct_name() %></td>
+                      <td><%=CurrencyFormatter.getCurrency(orderDetail.getProduct().getDiscount()) %></td>
+                      <td><%=orderDetail.getEa() %></td>
                     </tr>
                     <%} %>
                   </tbody>

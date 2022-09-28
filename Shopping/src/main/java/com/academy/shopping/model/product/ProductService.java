@@ -13,6 +13,6 @@ public interface ProductService {
 	public void regist(Product product, String savePath);
 	public void registByExcel(File file, String ori, String dest);
 	public void update(Product product);
-	public void delete(Product product);
+	public void remove(Product product,String filepath);
 		
 }

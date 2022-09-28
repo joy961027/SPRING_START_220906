@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.academy.shopping.exception.FileException;
 import com.academy.shopping.exception.UploadException;
 import com.academy.shopping.model.domain.Product;
 
@@ -37,7 +38,7 @@ public class FileManager {
 	}
 	//엑셀파일 업로드 용
 	public File saveExcel(String path, MultipartFile excel){
-		
+			
 		File file=null;
 		try {
 				excel.transferTo(file = new File(path+"/"+excel.getOriginalFilename()));
@@ -49,11 +50,19 @@ public class FileManager {
 		}
 		return file;
 	}
-	
-	
+		
+		
 	public static String  getExt(String path) {
 		int index =path.lastIndexOf("."); //가장 마지막 점의 인데스 구하기
 		return path.substring(index+1,path.length());
 		
+	}
+	//파일삭제
+	public void deleteFile(String filePath) throws FileException {
+		File file = new File(filePath); //지정한 경로의 파일에 대한 객체 생성
+		boolean result = file.delete();
+		if(result==false) {
+			throw new FileException("파일삭제 실패");
+		}
 	}
 }

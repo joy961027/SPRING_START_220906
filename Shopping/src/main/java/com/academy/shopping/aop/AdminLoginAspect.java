@@ -26,7 +26,9 @@ public class AdminLoginAspect {
 		//로그인이 필요한 서비스와  필요하지 않은 서비스로 크게 나누자
 		if(
 				uri.equals("/admin/loginForm") ||//로그인 폼
-				uri.equals("/admin/registForm") //회원가입 폼
+				uri.equals("/admin/registForm") || //회원가입 폼
+				uri.equals("/admin/main") ||
+				uri.equals("/admin/product/registForm") 
 				
 				
 				) {

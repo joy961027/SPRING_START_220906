@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -59,15 +60,13 @@ public class ProductController {
 		return mav;
 	}
 	//관리자 - 상품 detail보기
-	@GetMapping("/admin/product/detail")
-	public ModelAndView getDetail(int product_id,HttpServletRequest request) {
+	@GetMapping("/admin/product/view")
+	public ModelAndView getDetail(@RequestParam(defaultValue = "0") int product_id,HttpServletRequest request) {
 	Product product= productService.select(product_id);
 	ModelAndView mav =  new ModelAndView("admin/product/detail");
 	mav.addObject("product", product);
 	return mav;
 	}
-	
-	
 	
 	
 	//관리자 -엑셀 등록
@@ -84,6 +83,19 @@ public class ProductController {
 		ModelAndView mav = new ModelAndView("redirect:/admin/product/list");
 		return mav;
 	}
+	
+	@PostMapping("/admin/product/delete")
+	public ModelAndView deleteProduct(HttpServletRequest request, Product product) {
+		ServletContext context = request.getServletContext();
+		String path =context.getRealPath("/resources/data");
+		String filePath = path+"/"+product.getProduct_img();
+		productService.remove(product,filePath);
+		ModelAndView mav = new ModelAndView("redirect:/admin/product/list");
+		return mav;
+	}
+	
+
+	
 	
 	
 	@ExceptionHandler(ProductException.class)

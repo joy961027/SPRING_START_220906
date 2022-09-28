@@ -49,7 +49,7 @@
       	<!--select 2-->
 	        <div class="card card-primary">
 	          <div class="card-header">
-	            <h3 class="card-title">상품등록 폼</h3>
+	            <h3 class="card-title">상품정보</h3>
 	
 	            <div class="card-tools">
 	              <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -70,7 +70,6 @@
 		                <div class="form-group">
 		                  <label>상위카테고리</label>
 		                  <select class="form-control select" style="width: 100%;" size="7">
-		                    <option selected="selected"></option>
 		                  </select>
 		                </div>
 		              </div>
@@ -81,8 +80,7 @@
 		           
 		                <div class="form-group">
 		                  <label>하위 카테고리</label>
-		                  <select class="form-control select" style="width: 100%;" size="7" name="subcategory.subcategory_id">
-		                  </select>
+		                  <select class="form-control select" style="width: 100%;" size="7" name="subcategory.subcategory_id"></select>
 		                </div>
 		              </div>
 	            	</div>
@@ -90,15 +88,21 @@
 	             
 	             <!-- 우측 9 영역 차지 begin-->
 	            	<div class="col-md-9">
+	            			<input type="hidden" value="<%=product.getSubcategory().getTopcategory().getTopcategory_id()%>" name="topcategory_id">
+	            			<input type="hidden" value="<%=product.getSubcategory().getSubcategory_id()%>" name="subcategory_id">
+	            			<input type="hidden" value="<%=product.getProduct_id()%>" name="product_id">
+	            			<input type="hidden" value="<%=product.getProduct_img()%>" name="product_img">
 		            		<input type="text" value="<%=product.getProduct_name() %>" class="form-control" name="product_name">
 		            		<input type="text" value="<%=product.getBrand() %>" class="form-control" name="brand">
 		            		<input type="number" value="<%=product.getPrice() %>" class="form-control" name="price">
 		            		<input type="number" value="<%=product.getDiscount() %>" class="form-control" name="discount">
 							<textarea class="form-control"  name="memo"><%=product.getMemo() %></textarea>            		
 							<textarea class="form-control"  id="summernote" name="detail"><%=product.getDetail() %></textarea>
-							<input type="file" class="form-control" value="상품이미지 선택" name="photo">            		
-							<button type="button" class="btn btn-info" ><%=product.getSubcategory().getTopcategory() %></button>
-							<button type="button" class="btn btn-info" onClick="location.href='/admin/product/list';">목록 보기</button>
+							<img src="/static/data/<%=product.getProduct_img()%>">
+							<input type="file" class="form-control" placeholder="상품이미지 선택" name="photo">            		
+							<button type="button" class="btn btn-info" onClick="editProduct()">수정</button>
+							<button type="button" class="btn btn-info" onClick="deleteProduct()">삭제</button>
+							<button type="button" class="btn btn-info" onClick="location.href='/admin/product/list';">목록보기</button>
 	            	</div>
 	             <!-- 우측 9 영역 차지  end-->
 	            </div>
@@ -132,7 +136,9 @@
 </div>
 <!-- ./wrapper -->
 <%@ include file="../inc/footer_link.jsp" %>
+ 
 <script>
+var subcategory_id= $("input[name='subcategory_id']").val();
 function getTopList(){
 	$.ajax({
 		url:"/rest/admin/topcategory",
@@ -148,14 +154,14 @@ function getTopList(){
 
 function printTopList(jsonArray){
 	var sel=$($("select")[0]);
+	var topcategordy_id= $("input[name='topcategory_id']").val();
 	$(sel).empty();
 	for(var i=0; i<jsonArray.length; i++){
 		var topcategory =jsonArray[i];
 		$(sel).append("<option value=\""+topcategory.topcategory_id +"\">"+topcategory.category_name+"</option>");
-		
-		 
 	}
-	$(sel).val("1").prop("selected", true);
+	$(sel).val(topcategordy_id);
+	getSubList(topcategordy_id);
 }
 
 function getSubList(topcategory_id){
@@ -179,21 +185,41 @@ function printSubList(jsonArray){
 		var subcategory =jsonArray[i];
 		$(sel).append("<option value=\""+subcategory.subcategory_id +"\">"+subcategory.category_name+"</option>");
 	}
+	$(sel).val(subcategory_id);
 	
 }
-function registProduct(){
-	if(confirm("상품을 등록하시겠습니까?")){
-		$("form").attr({
-			"action":"/admin/product/regist",
-			"method":"post",
-			"enctype":"multipart/form-data"
+
+//동기 
+//비동기 전송시 json으로 key-vallue를 일일이 form 을 포기하고 작성해야 하는건 너무 불편
+//시리얼화 시켜 편의성을 높이자
+function deleteProduct(){
+	//기존의 폼양식을 전송할 수 있도록 쪼개자(직렬화-분해)
+	var formArray = $("form").serializeArray();
+	//서버에 전송시 json으로 보내기
+	var json={};
+	for(var i=0; i<formArray.length;i++){
+		json[formArray[i].name]=formArray[i].value;
+	}
+	
+	console.log(json)
+	
+	if(confirm("상품을 삭제하시겠습니까?")){
+		$.ajax({
+			url:"/rest/admin/product/delete",
+			type:"post",
+			contentType:"application/json;charset=utf-8",//서버에게 이자료가 json형태라는것을 알려줌
+			data:JSON.stringify(json),
+			success:function(result,status,xhr){
+				alert(result.msg);
+				if(result.code==1){
+					location.href="/admin/product/list"
+				}
+			}
 		});
-		$("form").submit();
 	}
 }
 $(function () {
 	getTopList();
-	
 	$($("select")[0]).change(function(){
 		//alert("당신이 선택한 아이템의 value값은 " + $(this).val())
 		getSubList($(this).val());
@@ -202,6 +228,7 @@ $(function () {
 	 $('#summernote').summernote({
 		 height: 200
 	 });
+	 
 
 });
 </script>
